@@ -1,6 +1,7 @@
 include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = SlipperyIndicatorPrefs
+
 SlipperyIndicatorPrefs_FILES = $(wildcard *.m)
 SlipperyIndicatorPrefs_FRAMEWORKS = UIKit CoreGraphics
 SlipperyIndicatorPrefs_PRIVATE_FRAMEWORKS = Preferences
@@ -16,6 +17,9 @@ internal-stage::
 	@cp -f $(THEOS_PROJECT_DIR)/Prefs/Resources/bubble.png $(THEOS_STAGING_DIR)/Library/PreferenceBundles/SlipperyIndicatorPrefs.bundle/bubble.png
 	@cp -f $(THEOS_PROJECT_DIR)/Prefs/Resources/bubble@2x.png $(THEOS_STAGING_DIR)/Library/PreferenceBundles/SlipperyIndicatorPrefs.bundle/bubble@2x.png
 	@cp -f $(THEOS_PROJECT_DIR)/Prefs/Resources/bubble@3x.png $(THEOS_STAGING_DIR)/Library/PreferenceBundles/SlipperyIndicatorPrefs.bundle/bubble@3x.png
+
+	@mkdir -p $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences
+	@cp -f $(THEOS_PROJECT_DIR)/Prefs/entry.plist $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences/SlipperyIndicatorPrefs.plist
 
 after-install::
 	install.exec "killall -9 Preferences || true"
