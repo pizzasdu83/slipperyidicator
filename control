@@ -6,5 +6,5 @@ Description: Repositionne librement les icônes de la status bar (batterie, heur
 Maintainer: pizzasdu83
 Author: pizzasdu83
 Section: Tweaks
-Depends: firmware (>= 15.0), mobilesubstrate
-Homepage: https://github.com/pizzasdu83/SlipperyIndicator
+Depends: firmware (>= 15.0), mobilesubstrate, preferenceloader
+Homepage: https://github.com/pizzasdu83/slipperyindicator
