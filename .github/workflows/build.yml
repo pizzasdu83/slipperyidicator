@@ -1,0 +1,27 @@
+name: Build SlipperyIndicator
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: theosorg/theos:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build package
+        shell: bash
+        run: |
+          export THEOS=/opt/theos
+          make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1
+
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: SlipperyIndicator-deb
+          path: packages/*.deb

@@ -1,0 +1,25 @@
+{
+    items = (
+        {
+            cell = PSGroupCell;
+            label = "Slippery Indicator";
+            footerText = "Repositionne librement la batterie, l'heure, le wifi et le réseau sur l'écran, avec une traînée de bulles pendant le déplacement.";
+        },
+        {
+            cell = PSSwitchCell;
+            label = "Activer";
+            key = "enabled";
+            default = 0;
+            PostNotification = "com.pizzasdu83.slipperyindicator/reload";
+        },
+        {
+            cell = PSButtonCell;
+            label = "Modifier les positions…";
+            buttonAction = openEditor;
+        },
+        {
+            cell = PSGroupCell;
+            footerText = "Astuce : dans l'éditeur, glisse un élément pour le repositionner, ou utilise les curseurs pour un réglage précis en pixels.";
+        }
+    );
+}

@@ -1,0 +1,8 @@
+{
+    entry = {
+        label = "Slippery Indicator";
+        cell = PSLinkCell;
+        detail = SlipperyIndicatorListController;
+        bundle = SlipperyIndicatorPrefs;
+    };
+}

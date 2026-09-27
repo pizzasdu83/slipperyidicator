@@ -1,0 +1,10 @@
+Package: com.pizzasdu83.slipperyindicator
+Name: Slippery Indicator
+Version: 0.1.0
+Architecture: iphoneos-arm64
+Description: Repositionne librement les icônes de la status bar (batterie, heure, wifi, réseau) avec un effet de bulles pendant le déplacement.
+Maintainer: pizzasdu83
+Author: pizzasdu83
+Section: Tweaks
+Depends: firmware (>= 15.0), mobilesubstrate
+Homepage: https://github.com/pizzasdu83/SlipperyIndicator
