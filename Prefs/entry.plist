@@ -2,7 +2,7 @@
     entry = {
         label = "Slippery Indicator";
         cell = PSLinkCell;
-        detail = SlipperyIndicatorListController;
+        isController = 1;
         bundle = SlipperyIndicatorPrefs;
     };
 }
