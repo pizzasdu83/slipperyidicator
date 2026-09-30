@@ -21,6 +21,7 @@ static void SIWritePref(NSString *key, id value) {
 @end
 
 @implementation SlipperyIndicatorEditViewController {
+    UIScrollView *_scrollView;
     UIView *_canvasView;
     UIView *_bubbleLayer;
     NSMutableDictionary<NSNumber *, UIView *> *_chips;
@@ -59,6 +60,11 @@ static void SIWritePref(NSString *key, id value) {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     _bubbleImage = [UIImage imageNamed:@"bubble" inBundle:bundle compatibleWithTraitCollection:nil];
 
+    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    _scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _scrollView.alwaysBounceVertical = YES;
+    [self.view addSubview:_scrollView];
+
     [self buildCanvas];
     [self buildControlsPanel];
     [self loadChipsFromPrefs];
@@ -79,7 +85,7 @@ static void SIWritePref(NSString *key, id value) {
     _canvasView.layer.borderWidth = 1.0;
     _canvasView.layer.borderColor = [UIColor colorWithWhite:0.5 alpha:0.3].CGColor;
     _canvasView.clipsToBounds = YES;
-    [self.view addSubview:_canvasView];
+    [_scrollView addSubview:_canvasView];
 
     _bubbleLayer = [[UIView alloc] initWithFrame:_canvasView.bounds];
     _bubbleLayer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -141,44 +147,44 @@ static void SIWritePref(NSString *key, id value) {
 
     _selectedLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, top, width - 60, 24)];
     _selectedLabel.font = [UIFont boldSystemFontOfSize:16];
-    [self.view addSubview:_selectedLabel];
+    [_scrollView addSubview:_selectedLabel];
 
     _itemSwitch = [[UISwitch alloc] init];
     _itemSwitch.frame = CGRectMake(self.view.bounds.size.width - margin - 51, top - 4, 51, 31);
     [_itemSwitch addTarget:self action:@selector(itemSwitchChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:_itemSwitch];
+    [_scrollView addSubview:_itemSwitch];
 
     top += 40;
 
     UILabel *xLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, top, 20, 30)];
     xLabel.text = @"X";
     xLabel.font = [UIFont boldSystemFontOfSize:14];
-    [self.view addSubview:xLabel];
+    [_scrollView addSubview:xLabel];
 
     _xSlider = [[UISlider alloc] initWithFrame:CGRectMake(margin + 26, top, width - 26 - 74, 30)];
     _xSlider.minimumValue = 0;
     _xSlider.maximumValue = _screenW;
     [_xSlider addTarget:self action:@selector(xSliderChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:_xSlider];
+    [_scrollView addSubview:_xSlider];
 
     _xField = [self makePxFieldAtX:margin + width - 64 top:top];
-    [self.view addSubview:_xField];
+    [_scrollView addSubview:_xField];
 
     top += 44;
 
     UILabel *yLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, top, 20, 30)];
     yLabel.text = @"Y";
     yLabel.font = [UIFont boldSystemFontOfSize:14];
-    [self.view addSubview:yLabel];
+    [_scrollView addSubview:yLabel];
 
     _ySlider = [[UISlider alloc] initWithFrame:CGRectMake(margin + 26, top, width - 26 - 74, 30)];
     _ySlider.minimumValue = 0;
     _ySlider.maximumValue = _screenH;
     [_ySlider addTarget:self action:@selector(ySliderChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:_ySlider];
+    [_scrollView addSubview:_ySlider];
 
     _yField = [self makePxFieldAtX:margin + width - 64 top:top];
-    [self.view addSubview:_yField];
+    [_scrollView addSubview:_yField];
 
     top += 50;
     UILabel *hint = [[UILabel alloc] initWithFrame:CGRectMake(margin, top, width, 40)];
@@ -186,7 +192,10 @@ static void SIWritePref(NSString *key, id value) {
     hint.font = [UIFont systemFontOfSize:12];
     hint.textColor = [UIColor secondaryLabelColor];
     hint.text = @"Glisse un élément dans l'aperçu ci-dessus, ou choisis-le puis ajuste sa position au pixel près avec les curseurs.";
-    [self.view addSubview:hint];
+    [_scrollView addSubview:hint];
+
+    CGFloat contentHeight = top + 40 + 24.0;
+    _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, contentHeight);
 }
 
 - (UITextField *)makePxFieldAtX:(CGFloat)x top:(CGFloat)top {
