@@ -10,6 +10,7 @@
             label = "Activer";
             key = "enabled";
             default = 0;
+            defaults = "com.pizzasdu83.slipperyindicator";
             PostNotification = "com.pizzasdu83.slipperyindicator/reload";
         },
         {
