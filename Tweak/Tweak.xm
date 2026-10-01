@@ -86,7 +86,37 @@ static void SISetNativeStatusBarHidden(BOOL hidden) {
     _overlayWindow.backgroundColor = [UIColor clearColor];
     _overlayWindow.rootViewController = [UIViewController new];
     _overlayWindow.rootViewController.view.backgroundColor = [UIColor clearColor];
-    _overlayWindow.hidden = NO;
+
+    [self attachWindowSceneWithRetry:0];
+}
+
+// Depuis iOS 13, une UIWindow créée "brute" sans windowScene associée ne
+// s'affiche souvent plus du tout, même avec hidden = NO. SpringBoard met un
+// petit moment à exposer ses scenes au tout début : on réessaie quelques fois
+// avant d'abandonner.
+- (void)attachWindowSceneWithRetry:(NSInteger)attempt {
+    UIWindowScene *scene = nil;
+    for (UIWindow *w in [UIApplication sharedApplication].windows) {
+        if (w.windowScene) { scene = w.windowScene; break; }
+    }
+    if (!scene) {
+        NSArray *scenes = [UIApplication sharedApplication].connectedScenes.allObjects;
+        for (UIScene *s in scenes) {
+            if ([s isKindOfClass:[UIWindowScene class]]) { scene = (UIWindowScene *)s; break; }
+        }
+    }
+
+    if (scene) {
+        _overlayWindow.windowScene = scene;
+        _overlayWindow.hidden = NO;
+        [self reload];
+        return;
+    }
+
+    if (attempt >= 20) return; // ~10s, on abandonne proprement
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self attachWindowSceneWithRetry:attempt + 1];
+    });
 }
 
 - (UILabel *)freshLabel {
