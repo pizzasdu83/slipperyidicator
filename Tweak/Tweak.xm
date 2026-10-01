@@ -96,14 +96,9 @@ static void SISetNativeStatusBarHidden(BOOL hidden) {
 // avant d'abandonner.
 - (void)attachWindowSceneWithRetry:(NSInteger)attempt {
     UIWindowScene *scene = nil;
-    for (UIWindow *w in [UIApplication sharedApplication].windows) {
-        if (w.windowScene) { scene = w.windowScene; break; }
-    }
-    if (!scene) {
-        NSArray *scenes = [UIApplication sharedApplication].connectedScenes.allObjects;
-        for (UIScene *s in scenes) {
-            if ([s isKindOfClass:[UIWindowScene class]]) { scene = (UIWindowScene *)s; break; }
-        }
+    NSArray *scenes = [UIApplication sharedApplication].connectedScenes.allObjects;
+    for (UIScene *s in scenes) {
+        if ([s isKindOfClass:[UIWindowScene class]]) { scene = (UIWindowScene *)s; break; }
     }
 
     if (scene) {
